@@ -1,7 +1,6 @@
 const express = require("express")
 const cors = require('cors')
-const { Sequelize, sequelize, Classes, Books, Students, BookStudents, CommonStudentBook } = require('./models');
-const { where } = require("sequelize");
+const { sequelize, Classes, Books, Students, BookStudents, CommonStudentBook } = require('./models');
 const app = express()
 
 app.use(express.text())
