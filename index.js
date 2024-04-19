@@ -1,6 +1,6 @@
 const express = require("express")
 const cors = require('cors')
-const { Sequelize, sequelize, Classes, Books, Students, BookStudents } = require('./models');
+const { Sequelize, sequelize, Classes, Books, Students, BookStudents, CommonStudentBook } = require('./models');
 const { where } = require("sequelize");
 const app = express()
 
@@ -93,7 +93,29 @@ app.post('/borrow', async (req, res) => {
             }
         });
         const output = await BookStudents.create({ BookId: book.id, StudentId: student.id });
-        console.log('output: ', output);
+        return res.json(output)
+    } catch (e) {
+        console.log("erorrrrr", e)
+        return res.status(500).json(e)
+    }
+})
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////
+
+app.post('/borrowbycommontablebyme', async (req, res) => {
+    const { stdUuid, bookUuid } = req.body;
+    try {
+        const book = await Books.findOne({
+            where: {
+                uuid: bookUuid
+            }
+        });
+        const student = await Students.findOne({
+            where: {
+                uuid: stdUuid
+            }
+        });
+        const output = await CommonStudentBook.create({ bookId: book.id, studentId: student.id });
         return res.json(output)
     } catch (e) {
         console.log("erorrrrr", e)
